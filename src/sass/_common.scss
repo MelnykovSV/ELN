@@ -1,14 +1,15 @@
 @import '~node_modules/modern-normalize/modern-normalize.css';
 .compound-form {
   width: 260px;
+  border: solid 1px black;
 }
 input[type='text'] {
   width: 100%;
 }
 
-// .text-input-label {
-//   display: flex;
-// }
+.text-input-label {
+  display: flex;
+}
 
 .compound-form__compound-data {
   display: flex;
@@ -25,5 +26,30 @@ canvas {
 }
 
 .compound-form-canvas-container {
+  border: solid 1px black;
+}
+.compound-from__button-block {
+  font-size: 14px;
+}
+
+.compound-form__single-fraction-upper-part {
+  display: flex;
+  border: solid 1px black;
+}
+
+.compound-form__single-fraction-characteristics {
+  width: 70%;
+  display: flex;
+}
+.compound-form__single-fraction-spectra {
+  display: flex;
+  flex-direction: column;
+}
+
+textarea {
+  resize: none;
+}
+
+.compound-form__single-fraction-lower-part {
   border: solid 1px black;
 }
