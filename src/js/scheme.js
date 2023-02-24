@@ -6,4 +6,12 @@ export class Scheme {
     this.#body = [];
     this.#body.push(new Compound());
   }
+
+  addCompound() {
+    this.#body.push(new Compound());
+  }
+
+  get body() {
+    return this.#body;
+  }
 }
