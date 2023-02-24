@@ -1,1 +1,29 @@
 @import '~node_modules/modern-normalize/modern-normalize.css';
+.compound-form {
+  width: 260px;
+}
+input[type='text'] {
+  width: 100%;
+}
+
+// .text-input-label {
+//   display: flex;
+// }
+
+.compound-form__compound-data {
+  display: flex;
+  flex-direction: column;
+}
+
+canvas {
+  width: 150px;
+  height: 150px;
+}
+
+.compound-form__upper-part {
+  display: flex;
+}
+
+.compound-form-canvas-container {
+  border: solid 1px black;
+}
