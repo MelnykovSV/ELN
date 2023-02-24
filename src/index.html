@@ -5,22 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Page title</title>
     <link rel="stylesheet" href="./sass/index.scss" />
-    <script type="module" src="./index.js"></script>
   </head>
   <body>
     <form action="#" class="compound-form">
       <div class="compound-form__body">
         <div class="compound-form__upper-part">
-          <div class="compound-form-canvas-container"></div>
+          <div class="compound-form-canvas-container">
+            <canvas></canvas>
+          </div>
           <div class="compound-form__compound-data">
-            <label>
+            <label class="text-input-label">
               ID
               <input type="text" />
+            </label>
+            <label class="text-input-label">
+              MW
+              <input type="text" />
+            </label>
+            <label>
+              <input type="checkbox" name="" id="" />
+              Test
+            </label>
+            <label>
+              <input type="checkbox" name="" id="" />
+              Scaling
             </label>
           </div>
         </div>
         <div class="compound-form__lower-part"></div>
       </div>
     </form>
+    <script type="module" src="./index.js"></script>
   </body>
 </html>
