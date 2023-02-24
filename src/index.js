@@ -1,1 +1,1 @@
-import './js/compound';
+import './js/eln';
