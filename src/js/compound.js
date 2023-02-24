@@ -1,6 +1,6 @@
 import { Fraction } from './fraction';
 export class Compound {
-  static id = 0;
+  static compoundGlobalID = 0;
   #mw;
   #smiles;
   #isTestSuccessful;
@@ -8,8 +8,7 @@ export class Compound {
   #fractions;
 
   constructor() {
-    Compound.id += 1;
-    this.id = Compound.id;
+    this.compoundGlobalID = Compound.compoundGlobalID += 1;
     this.#mw = null;
     this.#smiles = null;
     this.#isTestSuccessful = false;
