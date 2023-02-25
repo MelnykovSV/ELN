@@ -10,9 +10,9 @@ export class Scheme {
   } = {}) {
     this.schemeGlobalID = schemeGlobalID;
     this.body = body;
-    if (this.body.length === 0) {
-      this.body.push(new Compound());
-    }
+    // if (this.body.length === 0) {
+    //   this.body.push(new Compound());
+    // }
   }
 
   addCompound() {

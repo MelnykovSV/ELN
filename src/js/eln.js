@@ -4,24 +4,29 @@ import { Fraction } from './fraction.js';
 import { Page } from './page.js';
 import { renderCompoundForm } from './renderCompoundForm.js';
 import { conformsTo } from 'lodash';
+import { getFromLocalStorage } from './localStorage.js';
 
 const pageButton = document.querySelector('.page-button');
 const schemeButton = document.querySelector('.scheme-button');
 const compoundButton = document.querySelector('.compound-button');
 
-const mainPage = new Page();
-// mainPage = JSON.parse(localStorage.getItem('pageBody'));
-
-const scheme = mainPage.body[0];
-for (const item of scheme.body) {
-  renderCompoundForm();
-}
-
 compoundButton.addEventListener('click', () => {
-  scheme.addCompound();
-  console.log('!!!');
-  localStorage.setItem('pageBody', JSON.stringify(mainPage));
+  page.body[0].addCompound();
+  localStorage.setItem('pageBody', JSON.stringify(page));
 });
 
-console.log(mainPage);
-console.log(JSON.stringify(mainPage));
+let page = getFromLocalStorage();
+
+if (page === null) {
+  page = new Page();
+}
+
+if (page.body.length !== 0) {
+  const scheme = page.body[0];
+  for (const item of scheme.body) {
+    renderCompoundForm();
+  }
+} else {
+  console.log('local storage is empty');
+  page.body.push(new Scheme());
+}
