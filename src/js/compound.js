@@ -15,13 +15,13 @@ export class Compound {
     isTestSuccessful = false,
     isScalingSuccessful = false,
     fractions = [],
-  }) {
-    this.compoundGlobalID = Compound.compoundGlobalID += 1;
-    this.mw = null;
-    this.smiles = null;
-    this.isTestSuccessful = false;
-    this.isScalingSuccessful = false;
-    this.fractions = [];
+  } = {}) {
+    this.compoundGlobalID = compoundGlobalID;
+    this.mw = mw;
+    this.smiles = smiles;
+    this.isTestSuccessful = isTestSuccessful;
+    this.isScalingSuccessful = isScalingSuccessful;
+    this.fractions = fractions;
   }
 
   // get isTestSuccessful() {
