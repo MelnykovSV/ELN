@@ -11,6 +11,7 @@ export class Compound {
   constructor({
     compoundGlobalID = (Compound.compoundGlobalID += 1),
     mw = null,
+    dbID = null,
     smiles = null,
     isTestSuccessful = false,
     isScalingSuccessful = false,
@@ -22,6 +23,7 @@ export class Compound {
     this.isTestSuccessful = isTestSuccessful;
     this.isScalingSuccessful = isScalingSuccessful;
     this.fractions = fractions;
+    this.dbID = dbID;
   }
 
   // get isTestSuccessful() {

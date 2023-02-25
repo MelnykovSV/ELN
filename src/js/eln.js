@@ -24,9 +24,25 @@ if (page === null) {
 if (page.body.length !== 0) {
   const scheme = page.body[0];
   for (const item of scheme.body) {
-    renderCompoundForm();
+    renderCompoundForm(item);
   }
 } else {
   console.log('local storage is empty');
   page.body.push(new Scheme());
 }
+
+const formsCollection = document.querySelectorAll('[data-id]');
+
+for (item of formsCollection) {
+  item.addEventListener('input', e => {
+    console.log(parseInt(e.currentTarget.dataset.id));
+    const compoundObject = page.body[0].body.find(
+      item => item.compoundGlobalID === parseInt(e.currentTarget.dataset.id)
+    );
+    // e.target.value
+    console.log(compoundObject);
+  });
+}
+console.log(formsCollection);
+
+console.log(page);
