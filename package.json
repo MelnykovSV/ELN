@@ -18,6 +18,7 @@
     "url": "https://github.com/MelnykovSV/ELN/issues"
   },
   "dependencies": {
+    "lodash": "^4.17.21",
     "modern-normalize": "^1.1.0"
   },
   "devDependencies": {

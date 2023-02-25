@@ -1,4 +1,5 @@
 import { Fraction } from './fraction';
+
 export class Compound {
   static compoundGlobalID = 0;
   #mw;

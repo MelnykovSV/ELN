@@ -1,4 +1,5 @@
 import { Compound } from './compound.js';
+import { renderCompoundForm } from './renderCompoundForm.js';
 
 export class Scheme {
   static schemeGlobalID = 0;
@@ -11,6 +12,7 @@ export class Scheme {
 
   addCompound() {
     this.#body.push(new Compound());
+    renderCompoundForm();
   }
 
   get body() {
