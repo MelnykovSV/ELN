@@ -2,44 +2,51 @@ import { Fraction } from './fraction';
 
 export class Compound {
   static compoundGlobalID = 0;
-  #mw;
-  #smiles;
-  #isTestSuccessful;
-  #isScalingSuccessful;
-  #fractions;
+  // #mw;
+  // #smiles;
+  // #isTestSuccessful;
+  // #isScalingSuccessful;
+  // #fractions;
 
-  constructor() {
+  constructor({
+    compoundGlobalID = (Compound.compoundGlobalID += 1),
+    mw = null,
+    smiles = null,
+    isTestSuccessful = false,
+    isScalingSuccessful = false,
+    fractions = [],
+  }) {
     this.compoundGlobalID = Compound.compoundGlobalID += 1;
-    this.#mw = null;
-    this.#smiles = null;
-    this.#isTestSuccessful = false;
-    this.#isScalingSuccessful = false;
-    this.#fractions = [];
+    this.mw = null;
+    this.smiles = null;
+    this.isTestSuccessful = false;
+    this.isScalingSuccessful = false;
+    this.fractions = [];
   }
 
-  get isTestSuccessful() {
-    return this.#isTestSuccessful;
-  }
-  get isScalingSuccessful() {
-    return this.#isScalingSuccessful;
-  }
+  // get isTestSuccessful() {
+  //   return this.#isTestSuccessful;
+  // }
+  // get isScalingSuccessful() {
+  //   return this.#isScalingSuccessful;
+  // }
 
-  set isTestSuccessful(value) {
-    if (typeof value === 'boolean') {
-      this.#isTestSuccessful = value;
-    } else {
-      throw new Error('Value must be a boolean');
-    }
-  }
-  set isScalingSuccessful(value) {
-    if (typeof value === 'boolean') {
-      this.#isScalingSuccessful = value;
-    } else {
-      throw new Error('Value must be a boolean');
-    }
-  }
+  // set isTestSuccessful(value) {
+  //   if (typeof value === 'boolean') {
+  //     this.#isTestSuccessful = value;
+  //   } else {
+  //     throw new Error('Value must be a boolean');
+  //   }
+  // }
+  // set isScalingSuccessful(value) {
+  //   if (typeof value === 'boolean') {
+  //     this.#isScalingSuccessful = value;
+  //   } else {
+  //     throw new Error('Value must be a boolean');
+  //   }
+  // }
 
   addFraction() {
-    this.#fractions.push(new Fraction());
+    this.fractions.push(new Fraction());
   }
 }

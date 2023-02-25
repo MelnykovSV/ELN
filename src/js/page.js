@@ -1,13 +1,13 @@
 import { Scheme } from './scheme';
 
 export class Page {
-  #body;
+  body;
   constructor() {
-    this.#body = [];
-    this.#body.push(new Scheme());
+    this.body = [];
+    this.body.push(new Scheme());
   }
 
-  get body() {
-    return this.#body;
-  }
+  //   get body() {
+  //     return this.#body;
+  //   }
 }
