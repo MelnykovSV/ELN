@@ -17,7 +17,7 @@ export class Scheme {
 
   addCompound() {
     this.body.push(new Compound());
-    renderCompoundForm();
+    // renderCompoundForm();
   }
 
   // get body() {
