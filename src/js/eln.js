@@ -33,7 +33,6 @@ compoundButton.addEventListener('click', () => {
   renderCompoundForm(page.body[0].body[page.body[0].body.length - 1]);
   mainPage.lastChild.addEventListener('input', e => {
     if (e.target.nodeName === 'INPUT') {
-      console.log(e.target);
       const compoundObject = page.body[0].body.find(
         item => item.compoundGlobalID === parseInt(e.currentTarget.dataset.id)
       );
@@ -50,14 +49,18 @@ compoundButton.addEventListener('click', () => {
         });
       }
     }
-    // if (e.target.nodeName === 'INPUT') {
-    //   const compoundObject = page.body[0].body.find(
-    //     item => item.compoundGlobalID === parseInt(e.currentTarget.dataset.id)
-    //   );
-    //   compoundObject[e.target.name] = e.target.value;
-    //   localStorage.setItem('pageBody', JSON.stringify(page));
 
-    // }
+    mainPage.lastChild.addEventListener('change', e => {
+      if (e.target.nodeName === 'INPUT' && e.target.type === 'checkbox') {
+        console.log('check');
+        console.log(e.target.checked);
+        const compoundObject = page.body[0].body.find(
+          item => item.compoundGlobalID === parseInt(e.currentTarget.dataset.id)
+        );
+        compoundObject[e.target.name] = e.target.checked;
+        localStorage.setItem('pageBody', JSON.stringify(page));
+      }
+    });
   });
   localStorage.setItem('pageBody', JSON.stringify(page));
 });
@@ -90,7 +93,7 @@ const formsCollection = document.querySelectorAll('[data-id]');
 
 for (item of formsCollection) {
   item.addEventListener('input', e => {
-    if (e.target.nodeName === 'INPUT') {
+    if (e.target.nodeName === 'INPUT' && e.target.type === 'text') {
       const compoundObject = page.body[0].body.find(
         item => item.compoundGlobalID === parseInt(e.currentTarget.dataset.id)
       );
@@ -107,6 +110,18 @@ for (item of formsCollection) {
           );
         });
       }
+    }
+  });
+
+  item.addEventListener('change', e => {
+    if (e.target.nodeName === 'INPUT' && e.target.type === 'checkbox') {
+      console.log('check');
+      console.log(e.target.checked);
+      const compoundObject = page.body[0].body.find(
+        item => item.compoundGlobalID === parseInt(e.currentTarget.dataset.id)
+      );
+      compoundObject[e.target.name] = e.target.checked;
+      localStorage.setItem('pageBody', JSON.stringify(page));
     }
   });
 }

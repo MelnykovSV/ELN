@@ -24,11 +24,11 @@ export function renderCompoundForm({
             <input type="text" name="mw" value="${mw}" />
           </label>
           <label>
-            <input type="checkbox" name="" id="" name="isTestSuccessful" checked='${isTestSuccessful}' />
+            <input type="checkbox" id="" name="isTestSuccessful" checked='${isTestSuccessful}' />
             Test
           </label>
           <label>
-            <input type="checkbox" name="" id="" name="isScalingSuccessful" checked='${isScalingSuccessful}' />
+            <input type="checkbox" id="" name="isScalingSuccessful" checked='${isScalingSuccessful}' />
             Scaling
           </label>
         </div>
