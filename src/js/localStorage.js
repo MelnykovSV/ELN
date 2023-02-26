@@ -15,7 +15,7 @@ export function getFromLocalStorage() {
     page.body.push(scheme);
 
     for (compoundData of schemeData.body) {
-      const compound = new Compound();
+      const compound = new Compound(compoundData);
       scheme.body.push(compound);
 
       for (fractionData of compoundData.fractions) {
