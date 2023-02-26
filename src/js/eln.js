@@ -34,14 +34,22 @@ if (page.body.length !== 0) {
 const formsCollection = document.querySelectorAll('[data-id]');
 
 for (item of formsCollection) {
+  //   if (e.target.nodeName === 'INPUT') {
   item.addEventListener('input', e => {
-    console.log(parseInt(e.currentTarget.dataset.id));
-    const compoundObject = page.body[0].body.find(
-      item => item.compoundGlobalID === parseInt(e.currentTarget.dataset.id)
-    );
-    // e.target.value
-    console.log(compoundObject);
+    if (e.target.nodeName === 'INPUT') {
+      console.log(parseInt(e.currentTarget.dataset.id));
+      const compoundObject = page.body[0].body.find(
+        item => item.compoundGlobalID === parseInt(e.currentTarget.dataset.id)
+      );
+      // e.target.value
+      compoundObject[e.target.name] = e.target.value;
+      console.log(e.target.name);
+      console.log(e.target.nodeName);
+      localStorage.setItem('pageBody', JSON.stringify(page));
+      console.log(page);
+    }
   });
+  //   }
 }
 console.log(formsCollection);
 
