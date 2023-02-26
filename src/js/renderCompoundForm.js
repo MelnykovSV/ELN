@@ -12,7 +12,7 @@ export function renderCompoundForm({
     <div class="compound-form__body">
       <div class="compound-form__upper-part">
         <div class="compound-form-canvas-container">
-          <canvas></canvas>
+          <canvas id="canvas${compoundGlobalID}"></canvas>
         </div>
         <div class="compound-form__compound-data">
           <label class="">
@@ -24,11 +24,15 @@ export function renderCompoundForm({
             <input type="text" name="mw" value="${mw}" />
           </label>
           <label>
-            <input type="checkbox" name="" id="" name="isTestSuccessful" checked='${isTestSuccessful}' />
+            <input type="checkbox" id="" name="isTestSuccessful" ${
+              isTestSuccessful === true ? 'checked' : ''
+            } />
             Test
           </label>
           <label>
-            <input type="checkbox" name="" id="" name="isScalingSuccessful" checked='${isScalingSuccessful}' />
+            <input type="checkbox" id="" name="isScalingSuccessful" ${
+              isScalingSuccessful === true ? 'checked' : ''
+            } />
             Scaling
           </label>
         </div>
