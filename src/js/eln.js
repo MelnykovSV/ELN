@@ -33,6 +33,7 @@ compoundButton.addEventListener('click', () => {
   renderCompoundForm(page.body[0].body[page.body[0].body.length - 1]);
   mainPage.lastChild.addEventListener('input', e => {
     if (e.target.nodeName === 'INPUT') {
+      console.log(e.target);
       const compoundObject = page.body[0].body.find(
         item => item.compoundGlobalID === parseInt(e.currentTarget.dataset.id)
       );
@@ -49,6 +50,14 @@ compoundButton.addEventListener('click', () => {
         });
       }
     }
+    // if (e.target.nodeName === 'INPUT') {
+    //   const compoundObject = page.body[0].body.find(
+    //     item => item.compoundGlobalID === parseInt(e.currentTarget.dataset.id)
+    //   );
+    //   compoundObject[e.target.name] = e.target.value;
+    //   localStorage.setItem('pageBody', JSON.stringify(page));
+
+    // }
   });
   localStorage.setItem('pageBody', JSON.stringify(page));
 });
