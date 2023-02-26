@@ -12,7 +12,7 @@ export function renderCompoundForm({
     <div class="compound-form__body">
       <div class="compound-form__upper-part">
         <div class="compound-form-canvas-container">
-          <canvas></canvas>
+          <canvas id="canvas${compoundGlobalID}"></canvas>
         </div>
         <div class="compound-form__compound-data">
           <label class="">
