@@ -15,7 +15,10 @@ export function getFromLocalStorage() {
     page.body.push(scheme);
 
     for (compoundData of schemeData.body) {
-      const compound = new Compound(compoundData);
+      const compound = new Compound(
+        compoundData,
+        compoundData.compoundGlobalID
+      );
       scheme.body.push(compound);
 
       for (fractionData of compoundData.fractions) {

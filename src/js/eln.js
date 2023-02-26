@@ -3,7 +3,7 @@ import { Compound } from './compound.js';
 import { Fraction } from './fraction.js';
 import { Page } from './page.js';
 import { renderCompoundForm } from './renderCompoundForm.js';
-import { conformsTo } from 'lodash';
+// import { conformsTo } from 'lodash';
 import { getFromLocalStorage } from './localStorage.js';
 
 const pageButton = document.querySelector('.page-button');
@@ -11,14 +11,16 @@ const schemeButton = document.querySelector('.scheme-button');
 const compoundButton = document.querySelector('.compound-button');
 const mainPage = document.querySelector('.main-page');
 
+let globalCompoundID = parseInt(localStorage.getItem('globalCompoundID')) || 0;
+
 compoundButton.addEventListener('click', () => {
-  page.body[0].addCompound();
+  globalCompoundID += 1;
+  localStorage.setItem('globalCompoundID', globalCompoundID);
+
+  page.body[0].addCompound(globalCompoundID);
   renderCompoundForm(page.body[0].body[page.body[0].body.length - 1]);
   mainPage.lastChild.addEventListener('input', e => {
     if (e.target.nodeName === 'INPUT') {
-      console.log(e.target);
-      console.log(e.currentTarget);
-      console.log(parseInt(e.currentTarget.dataset.id));
       const compoundObject = page.body[0].body.find(
         item => item.compoundGlobalID === parseInt(e.currentTarget.dataset.id)
       );
@@ -30,6 +32,7 @@ compoundButton.addEventListener('click', () => {
 });
 
 let page = getFromLocalStorage();
+console.log(page);
 
 if (page === null) {
   page = new Page();
@@ -37,7 +40,10 @@ if (page === null) {
 
 if (page.body.length !== 0) {
   const scheme = page.body[0];
-  for (const item of scheme.body) {
+  const sortedSchemeBody = scheme.body.sort((a, b) => {
+    a.compoundGlobalID - b.compoundGlobalID;
+  });
+  for (const item of sortedSchemeBody) {
     renderCompoundForm(item);
   }
 } else {
@@ -50,7 +56,6 @@ const formsCollection = document.querySelectorAll('[data-id]');
 for (item of formsCollection) {
   item.addEventListener('input', e => {
     if (e.target.nodeName === 'INPUT') {
-      console.log(parseInt(e.currentTarget.dataset.id));
       const compoundObject = page.body[0].body.find(
         item => item.compoundGlobalID === parseInt(e.currentTarget.dataset.id)
       );
@@ -59,6 +64,3 @@ for (item of formsCollection) {
     }
   });
 }
-console.log(formsCollection);
-
-console.log(page);

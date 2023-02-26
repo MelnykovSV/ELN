@@ -8,16 +8,19 @@ export class Compound {
   // #isScalingSuccessful;
   // #fractions;
 
-  constructor({
-    compoundGlobalID = (Compound.compoundGlobalID += 1),
-    mw = null,
-    dbID = null,
-    smiles = null,
-    isTestSuccessful = false,
-    isScalingSuccessful = false,
-    fractions = [],
-  } = {}) {
-    this.compoundGlobalID = compoundGlobalID;
+  constructor(
+    {
+      // compoundGlobalID = (Compound.compoundGlobalID += 1),
+      mw = null,
+      dbID = null,
+      smiles = null,
+      isTestSuccessful = false,
+      isScalingSuccessful = false,
+      fractions = [],
+    } = {},
+    globalCompoundID
+  ) {
+    this.compoundGlobalID = globalCompoundID;
     this.mw = mw;
     this.smiles = smiles;
     this.isTestSuccessful = isTestSuccessful;
