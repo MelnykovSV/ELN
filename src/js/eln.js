@@ -31,27 +31,8 @@ compoundButton.addEventListener('click', () => {
 
   page.body[0].addCompound(globalCompoundID);
   renderCompoundForm(page.body[0].body[page.body[0].body.length - 1]);
-  mainPage.lastChild.addEventListener('input', e => {
-    if (e.target.nodeName === 'INPUT') {
-      const compoundObject = page.body[0].body.find(
-        item => item.compoundGlobalID === parseInt(e.currentTarget.dataset.id)
-      );
-      compoundObject[e.target.name] = e.target.value;
-      localStorage.setItem('pageBody', JSON.stringify(page));
-      if (e.target.name === 'smiles') {
-        SmilesDrawer.parse(e.target.value, function (tree) {
-          smilesDrawer.draw(
-            tree,
-            `canvas${e.currentTarget.dataset.id}`,
-            'light',
-            false
-          );
-        });
-      }
-    }
-
-    mainPage.lastChild.addEventListener('change', checkboxClicksHandler);
-  });
+  mainPage.lastChild.addEventListener('input', textInputHandler);
+  mainPage.lastChild.addEventListener('change', checkboxClicksHandler);
   localStorage.setItem('pageBody', JSON.stringify(page));
 });
 
@@ -82,28 +63,29 @@ if (page.body.length !== 0) {
 const formsCollection = document.querySelectorAll('[data-id]');
 
 for (item of formsCollection) {
-  item.addEventListener('input', e => {
-    if (e.target.nodeName === 'INPUT' && e.target.type === 'text') {
-      const compoundObject = page.body[0].body.find(
-        item => item.compoundGlobalID === parseInt(e.currentTarget.dataset.id)
-      );
-      compoundObject[e.target.name] = e.target.value;
-      localStorage.setItem('pageBody', JSON.stringify(page));
-
-      if (e.target.name === 'smiles') {
-        SmilesDrawer.parse(e.target.value, function (tree) {
-          smilesDrawer.draw(
-            tree,
-            `canvas${e.currentTarget.dataset.id}`,
-            'light',
-            false
-          );
-        });
-      }
-    }
-  });
-
+  item.addEventListener('input', textInputHandler);
   item.addEventListener('change', checkboxClicksHandler);
+}
+
+function textInputHandler(e) {
+  if (e.target.nodeName === 'INPUT' && e.target.type === 'text') {
+    const compoundObject = page.body[0].body.find(
+      item => item.compoundGlobalID === parseInt(e.currentTarget.dataset.id)
+    );
+    compoundObject[e.target.name] = e.target.value;
+    localStorage.setItem('pageBody', JSON.stringify(page));
+
+    if (e.target.name === 'smiles') {
+      SmilesDrawer.parse(e.target.value, function (tree) {
+        smilesDrawer.draw(
+          tree,
+          `canvas${e.currentTarget.dataset.id}`,
+          'light',
+          false
+        );
+      });
+    }
+  }
 }
 
 function checkboxClicksHandler(e) {
