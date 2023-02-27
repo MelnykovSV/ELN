@@ -50,17 +50,7 @@ compoundButton.addEventListener('click', () => {
       }
     }
 
-    mainPage.lastChild.addEventListener('change', e => {
-      if (e.target.nodeName === 'INPUT' && e.target.type === 'checkbox') {
-        console.log('check');
-        console.log(e.target.checked);
-        const compoundObject = page.body[0].body.find(
-          item => item.compoundGlobalID === parseInt(e.currentTarget.dataset.id)
-        );
-        compoundObject[e.target.name] = e.target.checked;
-        localStorage.setItem('pageBody', JSON.stringify(page));
-      }
-    });
+    mainPage.lastChild.addEventListener('change', checkboxClicksHandler);
   });
   localStorage.setItem('pageBody', JSON.stringify(page));
 });
@@ -113,15 +103,15 @@ for (item of formsCollection) {
     }
   });
 
-  item.addEventListener('change', e => {
-    if (e.target.nodeName === 'INPUT' && e.target.type === 'checkbox') {
-      console.log('check');
-      console.log(e.target.checked);
-      const compoundObject = page.body[0].body.find(
-        item => item.compoundGlobalID === parseInt(e.currentTarget.dataset.id)
-      );
-      compoundObject[e.target.name] = e.target.checked;
-      localStorage.setItem('pageBody', JSON.stringify(page));
-    }
-  });
+  item.addEventListener('change', checkboxClicksHandler);
+}
+
+function checkboxClicksHandler(e) {
+  if (e.target.nodeName === 'INPUT' && e.target.type === 'checkbox') {
+    const compoundObject = page.body[0].body.find(
+      item => item.compoundGlobalID === parseInt(e.currentTarget.dataset.id)
+    );
+    compoundObject[e.target.name] = e.target.checked;
+    localStorage.setItem('pageBody', JSON.stringify(page));
+  }
 }
