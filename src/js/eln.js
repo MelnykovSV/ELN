@@ -13,8 +13,6 @@ const pageButton = document.querySelector('.page-button');
 const schemeButton = document.querySelector('.scheme-button');
 const compoundButton = document.querySelector('.compound-button');
 const mainPage = document.querySelector('.main-page');
-const mainCanvas = document.querySelector('.main-canvas');
-const mainInput = document.querySelector('.main-input');
 
 let globalCompoundID = parseInt(localStorage.getItem('globalCompoundID')) || 0;
 
@@ -25,17 +23,7 @@ let options = {
 
 let smilesDrawer = new SmilesDrawer.Drawer(options);
 
-compoundButton.addEventListener('click', () => {
-  globalCompoundID += 1;
-  localStorage.setItem('globalCompoundID', globalCompoundID);
-
-  page.body[0].addCompound(globalCompoundID);
-  renderCompoundForm(page.body[0].body[page.body[0].body.length - 1]);
-  mainPage.lastChild.addEventListener('input', textInputHandler);
-  mainPage.lastChild.addEventListener('change', checkboxClicksHandler);
-  localStorage.setItem('pageBody', JSON.stringify(page));
-});
-
+///Initial loading page data  from localstorage and renderinf of the page
 let page = getFromLocalStorage();
 
 if (page === null) {
@@ -49,8 +37,6 @@ if (page.body.length !== 0) {
   });
   for (const item of sortedSchemeBody) {
     renderCompoundForm(item);
-
-    const canvas = document.querySelector(`#canvas${item.compoundGlobalID}`);
     SmilesDrawer.parse(item.smiles, function (tree) {
       smilesDrawer.draw(tree, `canvas${item.compoundGlobalID}`, 'light', false);
     });
@@ -60,12 +46,28 @@ if (page.body.length !== 0) {
   page.body.push(new Scheme());
 }
 
+/// This listener creates a new form on "Add compound" button click. It calculates new  globalCompoundID and saves new value to localStorage,
+/// add new compound object to the page object, render the form, adds eventlisteners to it and saves new page object to localstorage
+
+compoundButton.addEventListener('click', () => {
+  globalCompoundID += 1;
+  localStorage.setItem('globalCompoundID', globalCompoundID);
+  page.body[0].addCompound(globalCompoundID);
+  renderCompoundForm(page.body[0].body[page.body[0].body.length - 1]);
+  mainPage.lastChild.addEventListener('input', textInputHandler);
+  mainPage.lastChild.addEventListener('change', checkboxClicksHandler);
+  localStorage.setItem('pageBody', JSON.stringify(page));
+});
+
 const formsCollection = document.querySelectorAll('[data-id]');
 
 for (item of formsCollection) {
   item.addEventListener('input', textInputHandler);
   item.addEventListener('change', checkboxClicksHandler);
 }
+
+///Checks if the target is text input and if it is - on change saves its value  to localstorage
+/// If it is a SMILES input - draws molecule to canvas
 
 function textInputHandler(e) {
   if (e.target.nodeName === 'INPUT' && e.target.type === 'text') {
@@ -87,6 +89,8 @@ function textInputHandler(e) {
     }
   }
 }
+
+///Checks if the target is checkbox and if it is - on change saves its value  to localstorage
 
 function checkboxClicksHandler(e) {
   if (e.target.nodeName === 'INPUT' && e.target.type === 'checkbox') {
