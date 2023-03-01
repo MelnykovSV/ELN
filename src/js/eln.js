@@ -13,7 +13,8 @@ import { getFromLocalStorage } from './localStorage.js';
 const pageButton = document.querySelector('.page-button');
 const schemeButton = document.querySelector('.scheme-button');
 const compoundButton = document.querySelector('.compound-button');
-const scheme = document.querySelector('.scheme');
+
+const sheet = document.querySelector('.sheet');
 
 let globalCompoundID = parseInt(localStorage.getItem('globalCompoundID')) || 0;
 let globalSchemeID = parseInt(localStorage.getItem('globalCompoundID')) || 0;
@@ -28,32 +29,49 @@ let smilesDrawer = new SmilesDrawer.Drawer(options);
 ///Initial loading page data  from localstorage and renderinf of the page
 let page = getFromLocalStorage();
 
+console.log(page);
+
 if (page === null) {
   page = new Page();
 }
 
 if (page.body.length !== 0) {
-  const scheme = page.body[0];
-  const sortedSchemeBody = scheme.body.sort((a, b) => {
-    a.compoundGlobalID - b.compoundGlobalID;
-  });
-  for (const item of sortedSchemeBody) {
-    switch (item) {
-      case sortedSchemeBody[sortedSchemeBody.length - 1]:
-        renderCompoundForm(item, 'last');
-        break;
-      default:
-        renderCompoundForm(item);
-    }
-    // renderCompoundForm(item);
-    SmilesDrawer.parse(item.smiles, function (tree) {
-      smilesDrawer.draw(tree, `canvas${item.compoundGlobalID}`, 'light', false);
+  for (let i = 0; i < page.body.length; i += 1) {
+    sheet.insertAdjacentHTML(
+      'beforeend',
+      `<div class="scheme" data-schemeID='${page.body[i].globalSchemeID}'></div>`
+    );
+    const scheme = page.body[i];
+
+    console.log(scheme);
+    const sortedSchemeBody = scheme.body.sort((a, b) => {
+      a.compoundGlobalID - b.compoundGlobalID;
     });
+    for (const item of sortedSchemeBody) {
+      switch (item) {
+        case sortedSchemeBody[sortedSchemeBody.length - 1]:
+          renderCompoundForm(item, page.body[i].globalSchemeID, 'last');
+          break;
+        default:
+          renderCompoundForm(item, page.body[i].globalSchemeID);
+      }
+      // renderCompoundForm(item);
+      SmilesDrawer.parse(item.smiles, function (tree) {
+        smilesDrawer.draw(
+          tree,
+          `canvas${item.compoundGlobalID}`,
+          'light',
+          false
+        );
+      });
+    }
   }
 } else {
   console.log('local storage is empty');
   page.body.push(new Scheme());
 }
+
+const schemes = document.querySelectorAll('.scheme');
 
 /// This listener creates a new form on "Add compound" button click. It calculates new  globalCompoundID and saves new value to localStorage,
 /// add new compound object to the page object, render the form, adds eventlisteners to it and saves new page object to localstorage
@@ -68,19 +86,28 @@ compoundButton.addEventListener('click', () => {
   localStorage.setItem('pageBody', JSON.stringify(page));
 });
 
-scheme.addEventListener('click', e => {
-  if (e.target.name === 'addCompound') {
-    e.preventDefault();
-    globalCompoundID += 1;
-    e.target.disabled = true;
-    localStorage.setItem('globalCompoundID', globalCompoundID);
-    page.body[0].addCompound(globalCompoundID);
-    renderCompoundForm(page.body[0].body[page.body[0].body.length - 1], 'last');
-    scheme.lastChild.addEventListener('input', textInputHandler);
-    scheme.lastChild.addEventListener('change', checkboxClicksHandler);
-    localStorage.setItem('pageBody', JSON.stringify(page));
-  }
-});
+for (scheme of schemes) {
+  console.log(scheme);
+  scheme.addEventListener('click', e => {
+    console.log(e.currentTarget.dataset.schemeid);
+
+    if (e.target.name === 'addCompound') {
+      e.preventDefault();
+      globalCompoundID += 1;
+      e.target.disabled = true;
+      localStorage.setItem('globalCompoundID', globalCompoundID);
+      page.body[0].addCompound(globalCompoundID);
+      renderCompoundForm(
+        page.body[0].body[page.body[0].body.length - 1],
+        e.currentTarget.dataset.schemeid,
+        'last'
+      );
+      scheme.lastChild.addEventListener('input', textInputHandler);
+      scheme.lastChild.addEventListener('change', checkboxClicksHandler);
+      localStorage.setItem('pageBody', JSON.stringify(page));
+    }
+  });
+}
 
 schemeButton.addEventListener('click', () => {
   globalSchemeID += 1;
@@ -100,6 +127,7 @@ for (item of formsCollection) {
 /// If it is a SMILES input - draws molecule to canvas
 
 function textInputHandler(e) {
+  // e.currentTarget.dataset.globalSchemeID
   if (e.target.nodeName === 'INPUT' && e.target.type === 'text') {
     const compoundObject = page.body[0].body.find(
       item => item.compoundGlobalID === parseInt(e.currentTarget.dataset.id)

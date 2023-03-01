@@ -8,9 +8,10 @@ export function renderCompoundForm(
     dbID = '',
     fractions,
   } = {},
+  schemeID,
   isLastInScheme
 ) {
-  const mainPage = document.querySelector('.scheme');
+  const mainPage = document.querySelector(`[data-schemeid='${schemeID}']`);
   const markup = `<form action="#" class="compound-form" data-id='${compoundGlobalID}' data-schemeID=''>
     <div class="compound-form__body">
       <div class="compound-form__upper-part">
