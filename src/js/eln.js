@@ -3,6 +3,7 @@ import { Compound } from './compound.js';
 import { Fraction } from './fraction.js';
 import { Page } from './page.js';
 import { renderCompoundForm } from './renderCompoundForm.js';
+
 // import { conformsTo } from 'lodash';
 import { getFromLocalStorage } from './localStorage.js';
 // import { Drawer } from './../../node_modules/smiles-drawer/dist/smiles-drawer.min';
@@ -12,7 +13,7 @@ import { getFromLocalStorage } from './localStorage.js';
 const pageButton = document.querySelector('.page-button');
 const schemeButton = document.querySelector('.scheme-button');
 const compoundButton = document.querySelector('.compound-button');
-const mainPage = document.querySelector('.main-page');
+const mainPage = document.querySelector('.scheme');
 
 let globalCompoundID = parseInt(localStorage.getItem('globalCompoundID')) || 0;
 
@@ -36,7 +37,14 @@ if (page.body.length !== 0) {
     a.compoundGlobalID - b.compoundGlobalID;
   });
   for (const item of sortedSchemeBody) {
-    renderCompoundForm(item);
+    switch (item) {
+      case sortedSchemeBody[sortedSchemeBody.length - 1]:
+        renderCompoundForm(item, 'last');
+        break;
+      default:
+        renderCompoundForm(item);
+    }
+    // renderCompoundForm(item);
     SmilesDrawer.parse(item.smiles, function (tree) {
       smilesDrawer.draw(tree, `canvas${item.compoundGlobalID}`, 'light', false);
     });
@@ -78,6 +86,9 @@ function textInputHandler(e) {
     localStorage.setItem('pageBody', JSON.stringify(page));
 
     if (e.target.name === 'smiles') {
+      const molWeightInput = e.currentTarget.querySelector(
+        '.compound-form__mw-input'
+      );
       SmilesDrawer.parse(e.target.value, function (tree) {
         smilesDrawer.draw(
           tree,
@@ -86,6 +97,14 @@ function textInputHandler(e) {
           false
         );
       });
+      console.log(
+        SmilesDrawer.parse(e.target.value, tree => {
+          const formula = smilesDrawer.getMolecularFormula(tree);
+          molWeightInput.value = calc(formula).mass;
+          compoundObject.mw = calc(formula).mass;
+          localStorage.setItem('pageBody', JSON.stringify(page));
+        })
+      );
     }
   }
 }

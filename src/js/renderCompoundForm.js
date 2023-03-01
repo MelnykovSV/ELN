@@ -1,13 +1,16 @@
-export function renderCompoundForm({
-  compoundGlobalID,
-  mw = '',
-  smiles = '',
-  isTestSuccessful,
-  isScalingSuccessful,
-  dbID = '',
-  fractions,
-} = {}) {
-  const mainPage = document.querySelector('.main-page');
+export function renderCompoundForm(
+  {
+    compoundGlobalID,
+    mw = '',
+    smiles = '',
+    isTestSuccessful,
+    isScalingSuccessful,
+    dbID = '',
+    fractions,
+  } = {},
+  isLastInScheme
+) {
+  const mainPage = document.querySelector('.scheme');
   const markup = `<form action="#" class="compound-form" data-id = '${compoundGlobalID}'>
     <div class="compound-form__body">
       <div class="compound-form__upper-part">
@@ -21,7 +24,7 @@ export function renderCompoundForm({
           </label>
           <label class="">
             MW
-            <input type="text" name="mw" value="${mw}" />
+            <input class='compound-form__mw-input' type="text" name="mw" value="${mw}" />
           </label>
           <label>
             <input type="checkbox" id="" name="isTestSuccessful" ${
@@ -44,7 +47,9 @@ export function renderCompoundForm({
         </label>
         <div class="compound-from__button-block">
           <button type="submit">Add task</button>
-          <button type="submit">Add compund</button>
+          <button type="submit" ${
+            isLastInScheme !== 'last' ? 'disabled' : ''
+          }>Add compund</button>
           <label>
             Fractions
             <input type="checkbox" name="" id="" />
