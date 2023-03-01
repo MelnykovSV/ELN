@@ -11,7 +11,7 @@ export function renderCompoundForm(
   isLastInScheme
 ) {
   const mainPage = document.querySelector('.scheme');
-  const markup = `<form action="#" class="compound-form" data-id = '${compoundGlobalID}'>
+  const markup = `<form action="#" class="compound-form" data-id='${compoundGlobalID}' data-schemeID=''>
     <div class="compound-form__body">
       <div class="compound-form__upper-part">
         <div class="compound-form-canvas-container">
@@ -47,7 +47,7 @@ export function renderCompoundForm(
         </label>
         <div class="compound-from__button-block">
           <button type="submit">Add task</button>
-          <button type="submit" ${
+          <button type="submit" name='addCompound' ${
             isLastInScheme !== 'last' ? 'disabled' : ''
           }>Add compund</button>
           <label>

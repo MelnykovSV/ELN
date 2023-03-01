@@ -13,9 +13,10 @@ import { getFromLocalStorage } from './localStorage.js';
 const pageButton = document.querySelector('.page-button');
 const schemeButton = document.querySelector('.scheme-button');
 const compoundButton = document.querySelector('.compound-button');
-const mainPage = document.querySelector('.scheme');
+const scheme = document.querySelector('.scheme');
 
 let globalCompoundID = parseInt(localStorage.getItem('globalCompoundID')) || 0;
+let globalSchemeID = parseInt(localStorage.getItem('globalCompoundID')) || 0;
 
 let options = {
   width: 150,
@@ -61,9 +62,30 @@ compoundButton.addEventListener('click', () => {
   globalCompoundID += 1;
   localStorage.setItem('globalCompoundID', globalCompoundID);
   page.body[0].addCompound(globalCompoundID);
-  renderCompoundForm(page.body[0].body[page.body[0].body.length - 1]);
-  mainPage.lastChild.addEventListener('input', textInputHandler);
-  mainPage.lastChild.addEventListener('change', checkboxClicksHandler);
+  renderCompoundForm(page.body[0].body[page.body[0].body.length - 1], 'last');
+  scheme.lastChild.addEventListener('input', textInputHandler);
+  scheme.lastChild.addEventListener('change', checkboxClicksHandler);
+  localStorage.setItem('pageBody', JSON.stringify(page));
+});
+
+scheme.addEventListener('click', e => {
+  if (e.target.name === 'addCompound') {
+    e.preventDefault();
+    globalCompoundID += 1;
+    e.target.disabled = true;
+    localStorage.setItem('globalCompoundID', globalCompoundID);
+    page.body[0].addCompound(globalCompoundID);
+    renderCompoundForm(page.body[0].body[page.body[0].body.length - 1], 'last');
+    scheme.lastChild.addEventListener('input', textInputHandler);
+    scheme.lastChild.addEventListener('change', checkboxClicksHandler);
+    localStorage.setItem('pageBody', JSON.stringify(page));
+  }
+});
+
+schemeButton.addEventListener('click', () => {
+  globalSchemeID += 1;
+  localStorage.setItem('globalSchemeID', globalSchemeID);
+  page.addScheme(globalSchemeID);
   localStorage.setItem('pageBody', JSON.stringify(page));
 });
 
