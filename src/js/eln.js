@@ -37,9 +37,10 @@ if (page === null) {
 
 if (page.body.length !== 0) {
   for (let i = 0; i < page.body.length; i += 1) {
+    const currentScemeID = page.body[i].globalSchemeID;
     sheet.insertAdjacentHTML(
       'beforeend',
-      `<div class="scheme" data-schemeID='${page.body[i].globalSchemeID}'></div>`
+      `<div class="scheme" data-schemeID='${currentScemeID}'></div>`
     );
     const scheme = page.body[i];
 
@@ -50,10 +51,10 @@ if (page.body.length !== 0) {
     for (const item of sortedSchemeBody) {
       switch (item) {
         case sortedSchemeBody[sortedSchemeBody.length - 1]:
-          renderCompoundForm(item, page.body[i].globalSchemeID, 'last');
+          renderCompoundForm(item, currentScemeID, 'last');
           break;
         default:
-          renderCompoundForm(item, page.body[i].globalSchemeID);
+          renderCompoundForm(item, currentScemeID);
       }
       // renderCompoundForm(item);
       SmilesDrawer.parse(item.smiles, function (tree) {
@@ -89,22 +90,31 @@ compoundButton.addEventListener('click', () => {
 for (scheme of schemes) {
   console.log(scheme);
   scheme.addEventListener('click', e => {
-    console.log(e.currentTarget.dataset.schemeid);
+    const currentSchemeID = e.currentTarget.dataset.schemeid;
+    console.log(currentSchemeID);
 
     if (e.target.name === 'addCompound') {
       e.preventDefault();
       globalCompoundID += 1;
       e.target.disabled = true;
       localStorage.setItem('globalCompoundID', globalCompoundID);
-      page.body[0].addCompound(globalCompoundID);
+      page.body[currentSchemeID - 1].addCompound(globalCompoundID);
       renderCompoundForm(
-        page.body[0].body[page.body[0].body.length - 1],
+        page.body[0].body[page.body[currentSchemeID - 1].body.length - 1],
         e.currentTarget.dataset.schemeid,
         'last'
       );
-      scheme.lastChild.addEventListener('input', textInputHandler);
-      scheme.lastChild.addEventListener('change', checkboxClicksHandler);
-      localStorage.setItem('pageBody', JSON.stringify(page));
+      console.log(`element: ${scheme}`);
+      console.log(`last child: ${scheme.lastChild}`);
+      if (scheme.lastChild) {
+        scheme.lastChild.addEventListener('input', e => {
+          textInputHandler(e, currentSchemeID);
+        });
+        scheme.lastChild.addEventListener('change', e => {
+          checkboxClicksHandler(e, currentSchemeID);
+        });
+        localStorage.setItem('pageBody', JSON.stringify(page));
+      }
     }
   });
 }
@@ -118,18 +128,27 @@ schemeButton.addEventListener('click', () => {
 
 const formsCollection = document.querySelectorAll('[data-id]');
 
-for (item of formsCollection) {
-  item.addEventListener('input', textInputHandler);
-  item.addEventListener('change', checkboxClicksHandler);
+for (scheme of schemes) {
+  console.log(scheme.dataset.schemeid);
+  const currentSchemeID = scheme.dataset.schemeid;
+  for (item of formsCollection) {
+    item.addEventListener('input', e => {
+      textInputHandler(e, currentSchemeID);
+    });
+    item.addEventListener('change', e => {
+      checkboxClicksHandler(e, currentSchemeID);
+    });
+  }
 }
 
 ///Checks if the target is text input and if it is - on change saves its value  to localstorage
 /// If it is a SMILES input - draws molecule to canvas
 
-function textInputHandler(e) {
+function textInputHandler(e, id) {
+  console.log('this:' + id);
   // e.currentTarget.dataset.globalSchemeID
   if (e.target.nodeName === 'INPUT' && e.target.type === 'text') {
-    const compoundObject = page.body[0].body.find(
+    const compoundObject = page.body[id - 1].body.find(
       item => item.compoundGlobalID === parseInt(e.currentTarget.dataset.id)
     );
     compoundObject[e.target.name] = e.target.value;
@@ -161,9 +180,10 @@ function textInputHandler(e) {
 
 ///Checks if the target is checkbox and if it is - on change saves its value  to localstorage
 
-function checkboxClicksHandler(e) {
+function checkboxClicksHandler(e, id) {
+  console.log('this:' + id);
   if (e.target.nodeName === 'INPUT' && e.target.type === 'checkbox') {
-    const compoundObject = page.body[0].body.find(
+    const compoundObject = page.body[id - 1].body.find(
       item => item.compoundGlobalID === parseInt(e.currentTarget.dataset.id)
     );
     compoundObject[e.target.name] = e.target.checked;
