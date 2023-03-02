@@ -77,35 +77,41 @@ const schemes = document.querySelectorAll('.scheme');
 /// This listener creates a new form on "Add compound" button click. It calculates new  globalCompoundID and saves new value to localStorage,
 /// add new compound object to the page object, render the form, adds eventlisteners to it and saves new page object to localstorage
 
-compoundButton.addEventListener('click', () => {
-  globalCompoundID += 1;
-  localStorage.setItem('globalCompoundID', globalCompoundID);
-  page.body[0].addCompound(globalCompoundID);
-  renderCompoundForm(page.body[0].body[page.body[0].body.length - 1], 'last');
-  scheme.lastChild.addEventListener('input', textInputHandler);
-  scheme.lastChild.addEventListener('change', checkboxClicksHandler);
-  localStorage.setItem('pageBody', JSON.stringify(page));
-});
+// compoundButton.addEventListener('click', () => {
+//   globalCompoundID += 1;
+//   localStorage.setItem('globalCompoundID', globalCompoundID);
+//   page.body[0].addCompound(globalCompoundID);
+//   renderCompoundForm(page.body[0].body[page.body[0].body.length - 1], 'last');
+//   scheme.lastChild.addEventListener('input', textInputHandler);
+//   scheme.lastChild.addEventListener('change', checkboxClicksHandler);
+//   localStorage.setItem('pageBody', JSON.stringify(page));
+// });
 
-for (scheme of schemes) {
+for (const scheme of schemes) {
   console.log(scheme);
+  console.log(scheme.lastChild);
   scheme.addEventListener('click', e => {
     const currentSchemeID = e.currentTarget.dataset.schemeid;
+    console.log(schemes);
     console.log(currentSchemeID);
+    console.log(scheme);
 
     if (e.target.name === 'addCompound') {
       e.preventDefault();
       globalCompoundID += 1;
       e.target.disabled = true;
+      // console.log(e.currentTarget.parentElement);
       localStorage.setItem('globalCompoundID', globalCompoundID);
       page.body[currentSchemeID - 1].addCompound(globalCompoundID);
       renderCompoundForm(
-        page.body[0].body[page.body[currentSchemeID - 1].body.length - 1],
+        page.body[currentSchemeID - 1].body[
+          page.body[currentSchemeID - 1].body.length - 1
+        ],
         e.currentTarget.dataset.schemeid,
         'last'
       );
-      console.log(`element: ${scheme}`);
-      console.log(`last child: ${scheme.lastChild}`);
+      console.log(scheme);
+      console.log(scheme.lastChild);
       if (scheme.lastChild) {
         scheme.lastChild.addEventListener('input', e => {
           textInputHandler(e, currentSchemeID);
