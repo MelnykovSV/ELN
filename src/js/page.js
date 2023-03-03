@@ -12,4 +12,8 @@ export class Page {
   //   get body() {
   //     return this.#body;
   //   }
+  addScheme(globalSchemeID) {
+    this.body.push(new Scheme({}, globalSchemeID));
+    // renderCompoundForm();
+  }
 }
