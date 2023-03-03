@@ -186,32 +186,43 @@ schemeButton.addEventListener('click', () => {
 const formsCollection = document.querySelectorAll('[data-id]');
 console.log(formsCollection);
 
-for (scheme of schemes) {
-  const currentSchemeID = scheme.dataset.schemeid;
-  for (item of formsCollection) {
-    console.log(item.dataset.id);
-    item.addEventListener('input', e => {
-      textInputHandler(e, currentSchemeID);
-    });
-    item.addEventListener('change', e => {
-      checkboxClicksHandler(e, currentSchemeID);
-    });
-  }
+// for (scheme of schemes) {
+//   const currentSchemeID = scheme.dataset.schemeid;
+//   for (item of formsCollection) {
+//     console.log(item.dataset.id);
+//     item.addEventListener('input', e => {
+//       textInputHandler(e, currentSchemeID);
+//     });
+//     item.addEventListener('change', e => {
+//       checkboxClicksHandler(e, currentSchemeID);
+//     });
+//   }
+// }
+for (const form of formsCollection) {
+  form.addEventListener('input', e => {
+    console.log(form.parentNode.dataset.schemeid);
+    console.log(form);
+    textInputHandler(e, form.parentNode.dataset.schemeid);
+  });
+  form.addEventListener('change', e => {
+    checkboxClicksHandler(e, form.parentNode.dataset.schemeid);
+  });
 }
 
-// for (form of formsCollection) {
-//   console.log(form.dataset.id);
-//   form.addEventListener('input', e => {
-//     textInputHandler(e, form.dataset.id);
+// for (let i = 0; i < formsCollection.length; i += 1) {
+//   formsCollection[i].addEventListener('input', e => {
+//     console.log(formsCollection[i].parentNode.dataset.schemeid);
+//     console.log(formsCollection[i]);
+//     textInputHandler(e, formsCollection[i].parentNode.dataset.schemeid);
 //   });
-//   form.addEventListener('change', e => {
-//     checkboxClicksHandler(e, form.dataset.id);
+//   formsCollection[i].addEventListener('change', e => {
+//     checkboxClicksHandler(e, formsCollection[i].parentNode.dataset.schemeid);
 //   });
 // }
 
 ///Checks if the target is text input and if it is - on change saves its value  to localstorage
 /// If it is a SMILES input - draws molecule to canvas
-
+console.log(page);
 function textInputHandler(e, schemeID) {
   console.log('this:' + schemeID);
   // e.currentTarget.dataset.globalSchemeID
@@ -219,6 +230,8 @@ function textInputHandler(e, schemeID) {
     const compoundObject = page.body[schemeID - 1].body.find(
       item => item.compoundGlobalID === parseInt(e.currentTarget.dataset.id)
     );
+
+    console.log(page.body[schemeID - 1].body);
     compoundObject[e.target.name] = e.target.value;
     localStorage.setItem('pageBody', JSON.stringify(page));
 
@@ -234,14 +247,13 @@ function textInputHandler(e, schemeID) {
           false
         );
       });
-      // console.log(
-      //   SmilesDrawer.parse(e.target.value, tree => {
-      //     const formula = smilesDrawer.getMolecularFormula(tree);
-      //     molWeightInput.value = calc(formula).mass;
-      //     compoundObject.mw = calc(formula).mass;
-      //     localStorage.setItem('pageBody', JSON.stringify(page));
-      //   })
-      // );
+
+      SmilesDrawer.parse(e.target.value, tree => {
+        const formula = smilesDrawer.getMolecularFormula(tree);
+        molWeightInput.value = calc(formula).mass;
+        compoundObject.mw = calc(formula).mass;
+        localStorage.setItem('pageBody', JSON.stringify(page));
+      });
     }
   }
 }
